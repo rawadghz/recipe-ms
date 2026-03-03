@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results - Recipe Manager{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Search Results</h1>
+    <p>Found {{ recipes|length }} result(s) for "{{ query }}"</p>
+</div>
+
+{% if recipes %}
+    <div class="recipe-grid">
+        {% for recipe in recipes %}
+            <div class="recipe-card">
+                <div class="recipe-card-header">
+                    <h3><a href="{{ url_for('recipes.recipe_detail', recipe_id=recipe.id) }}">{{ recipe.title }}</a></h3>
+                    <span class="difficulty difficulty-{{ recipe.difficulty|lower }}">{{ recipe.difficulty }}</span>
+                </div>
+                {% if recipe.description %}
+                    <p class="recipe-description">{{ recipe.description }}</p>
+                {% endif %}
+                <div class="recipe-meta">
+                    {% if recipe.cooking_time %}
+                        <span class="meta-item">
+                            <span class="icon">⏱</span>
+                            {{ recipe.cooking_time }} min
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="recipe-card-actions">
+                    <a href="{{ url_for('recipes.recipe_detail', recipe_id=recipe.id) }}" class="btn btn-small">View</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>No recipes found matching "{{ query }}"</p>
+        <a href="{{ url_for('recipes.list_recipes') }}" class="btn btn-primary">Browse All Recipes</a>
+    </div>
+{% endif %}
+
+<div class="search-again">
+    <form action="{{ url_for('recipes.search_recipes') }}" method="get" class="search-form-inline">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search again...">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Recipe Manager - Home{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to Recipe Manager</h1>
+    <p>Your personal cookbook for organizing and discovering delicious recipes.</p>
+    <div class="hero-actions">
+        <a href="{{ url_for('recipes.list_recipes') }}" class="btn btn-primary">Browse Recipes</a>
+        <a href="{{ url_for('recipes.create_recipe') }}" class="btn btn-secondary">Add New Recipe</a>
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <h3>Organize</h3>
+        <p>Keep all your favorite recipes in one place with easy categorization.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Search</h3>
+        <p>Quickly find recipes by title or ingredients.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Create</h3>
+        <p>Add your own recipes with detailed instructions and ingredients.</p>
+    </div>
+</div>
+
+{% endblock %}
