@@ -5,6 +5,7 @@ A web-based recipe management system built with Flask, SQLite, and Jinja2 templa
 ## Tech Stack
 
 - **Backend**: Flask (Python web framework)
+- **WSGI Server**: Gunicorn
 - **Database**: SQLite (built-in Python)
 - **Templates**: Jinja2
 - **Styling**: Custom CSS
@@ -47,15 +48,20 @@ This will:
 
 ## Usage
 
-### Running the Application
-
-Activate the virtual environment and run:
+### Running with Gunicorn (Recommended for Production)
 
 ```bash
-poetry run python app.py
+poetry run gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app
 ```
 
-Or without activating:
+Options:
+- `-w 4` - Number of worker processes
+- `-b 0.0.0.0:5000` - Bind address
+- `wsgi:app` - WSGI module and application variable
+
+### Running in Development Mode
+
+For development with auto-reload:
 
 ```bash
 poetry run python app.py
@@ -63,19 +69,22 @@ poetry run python app.py
 
 The application will start at `http://localhost:5000`
 
-### Development Mode
+### Development vs Production
 
-The app runs in debug mode by default. Any changes to the code will automatically reload the server.
+- **Development** (`python app.py`): Debug mode on, auto-reload
+- **Production** (`gunicorn wsgi:app`): Debug off, multiple workers
 
 ## Project Structure
 
 ```
 recipe_manager/
 ├── app.py              # Main Flask application
+├── wsgi.py             # WSGI entry point for Gunicorn
 ├── config.py           # Configuration settings
 ├── models.py           # Database models and utilities
 ├── schema.sql          # Database schema
 ├── pyproject.toml      # Poetry configuration
+├── poetry.lock         # Locked dependencies
 ├── routes/
 │   ├── __init__.py    # Main blueprint
 │   └── recipes.py     # Recipe CRUD routes
