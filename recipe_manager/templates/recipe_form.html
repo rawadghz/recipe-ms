@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action }} Recipe - Recipe Manager{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <h1>{{ action }} Recipe</h1>
+
+    <form method="POST" class="recipe-form">
+        <div class="form-group">
+            <label for="title">Title *</label>
+            <input type="text" id="title" name="title" value="{{ recipe.title if recipe and recipe.title else '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="2">{{ recipe.description if recipe and recipe.description else '' }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="cooking_time">Cooking Time (minutes)</label>
+                <input type="number" id="cooking_time" name="cooking_time" value="{{ recipe.cooking_time if recipe and recipe.cooking_time else '' }}" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="difficulty">Difficulty</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="Easy" {% if recipe and recipe.difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+                    <option value="Medium" {% if recipe and recipe.difficulty == 'Medium' %}selected{% endif %}>Medium</option>
+                    <option value="Hard" {% if recipe and recipe.difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" id="category" name="category" list="categories" value="{{ recipe.category if recipe and recipe.category else '' }}" placeholder="e.g., Breakfast, Dessert, Italian">
+                <datalist id="categories">
+                    <option value="Breakfast">
+                    <option value="Lunch">
+                    <option value="Dinner">
+                    <option value="Dessert">
+                    <option value="Snack">
+                    <option value="Appetizer">
+                    <option value="Italian">
+                    <option value="Mexican">
+                    <option value="Asian">
+                    <option value="American">
+                </datalist>
+                <small>Type to search or add a new category</small>
+            </div>
+
+            <div class="form-group">
+                <label for="tag">Tag</label>
+                <select id="tag" name="tag">
+                    <option value="" {% if not recipe or not recipe.tag %}selected{% endif %}>No Tag</option>
+                    <option value="favorite" {% if recipe and recipe.tag == 'favorite' %}selected{% endif %}>Favorite</option>
+                    <option value="to_try" {% if recipe and recipe.tag == 'to_try' %}selected{% endif %}>To Try</option>
+                    <option value="made_before" {% if recipe and recipe.tag == 'made_before' %}selected{% endif %}>Made Before</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="rating">Rating</label>
+            <select id="rating" name="rating">
+                <option value="" {% if not recipe or not recipe.rating %}selected{% endif %}>No Rating</option>
+                <option value="5" {% if recipe and recipe.rating == 5 %}selected{% endif %}>5 Stars - Excellent</option>
+                <option value="4" {% if recipe and recipe.rating == 4 %}selected{% endif %}>4 Stars - Great</option>
+                <option value="3" {% if recipe and recipe.rating == 3 %}selected{% endif %}>3 Stars - Good</option>
+                <option value="2" {% if recipe and recipe.rating == 2 %}selected{% endif %}>2 Stars - Fair</option>
+                <option value="1" {% if recipe and recipe.rating == 1 %}selected{% endif %}>1 Star - Poor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="ingredients">Ingredients *</label>
+            <textarea id="ingredients" name="ingredients" rows="8" placeholder="Enter each ingredient on a new line" required>{{ recipe.ingredients if recipe and recipe.ingredients else '' }}</textarea>
+            <small>Enter each ingredient on a new line</small>
+        </div>
+
+        <div class="form-group">
+            <label for="instructions">Instructions *</label>
+            <textarea id="instructions" name="instructions" rows="10" placeholder="Enter each step on a new line" required>{{ recipe.instructions if recipe and recipe.instructions else '' }}</textarea>
+            <small>Enter each step on a new line</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{{ action }} Recipe</button>
+            <a href="{{ url_for('recipes.list_recipes') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

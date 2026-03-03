@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Recipe Manager{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="{{ url_for('main.index') }}" class="logo">Recipe Manager</a>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('recipes.list_recipes') }}">All Recipes</a></li>
+                    <li><a href="{{ url_for('recipes.create_recipe') }}">Add Recipe</a></li>
+                </ul>
+                <form action="{{ url_for('recipes.search_recipes') }}" method="get" class="search-form">
+                    <input type="text" name="q" placeholder="Search recipes..." class="search-input">
+                    <button type="submit" class="search-btn">Search</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Recipe Manager. Built with Flask & Jinja2.</p>
+        </div>
+    </footer>
+</body>
+</html>
